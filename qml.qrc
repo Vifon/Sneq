@@ -2,6 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>game.js</file>
-        <file>Snake.qml</file>
+        <file>SnakeSegment.qml</file>
+        <file>Apple.qml</file>
     </qresource>
 </RCC>

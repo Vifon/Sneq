@@ -6,37 +6,52 @@ Window {
     id: mainWindow
     visible: true
 
-    property int stepInterval: 250
-
-    property int fieldSize: 10
-    property int gameSize: 20
-
-//    Snake {
-//        id: snake
-
-//        Timer {
-//            interval: stepInterval
-//            repeat: true
-//            onTriggered: { Logic.step() }
-//        }
-//    }
+    property int stepInterval: 100
 
     Rectangle {
-        id: apple
-        objectName: "apple"
+        id: gameArea
 
-        width: parent.fieldSize
+        width: Math.min(
+                   mainWindow.width,
+                   mainWindow.height)
         height: width
-        radius: 2
-        x: 3
-        y: 3
 
-        color: "red"
+        border.color: "red"
+        border.width: 2
+        anchors.centerIn: parent
 
-        Timer {
-            interval: 0
-            repeat: false
-            onTriggered: { Logic.placeApple(this) }
+        property int fieldSize: width / gameSize
+        property int gameSize: 20
+    }
+
+    Component.onCompleted: { Logic.initialize() }
+
+    Timer {
+        id: stepTimer
+        running: true
+        interval: stepInterval
+        repeat: true
+        onTriggered: { Logic.step() }
+    }
+
+    Item {
+        focus: true
+
+        Keys.onPressed: {
+            Logic.onPressed(event)
         }
+    }
+
+    Text {
+        id: score
+
+        text: points * multiplier
+
+        property int multiplier: 5
+        property int points: 0
+
+        x: 10
+        y: 10
+        z: 1
     }
 }
