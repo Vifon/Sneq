@@ -1,7 +1,9 @@
 import QtQuick 2.0
 
 Rectangle {
-    property var velocity: [1, 0] // default: right
+    objectName: "snake"
+
+    property var velocity: [1, 0] // [x,y]; default: right
 
     property int size: parent.fieldSize
     property int x_pos: 0
@@ -15,5 +17,18 @@ Rectangle {
     height: width
 
     color: "lightgreen"
+
+    Behavior on x {
+        NumberAnimation {
+            duration: parent.stepInterval
+            easing.type: Easing.OutQuint
+        }
+    }
+    Behavior on y {
+        NumberAnimation {
+            duration: parent.stepInterval
+            easing.type: Easing.OutQuint
+        }
+    }
 }
 

@@ -13,12 +13,14 @@ function initialize() {
 
     score.points = 0;
 
-    apple = Apple.createObject(gameArea);
-    placeApple(apple);
-
     snake = [];
     snake.push(Snake.createObject(gameArea));
     grid[snake[0].x][snake[0].y] = snake[0];
+
+    apple = Apple.createObject(gameArea);
+    placeApple(apple);
+
+    last_chance = true;
 
     stepTimer.restart();
 }
@@ -45,8 +47,11 @@ function placeApple(apple) {
     apple.y_pos = y;
 }
 
+var last_chance = true;
+
 function step() {
     var last_pos = null;
+    var eat = false;
     for (var i = 0; i < snake.length; ++i) {
         var segment = snake[i];
         var dx = segment.velocity[0];
@@ -57,8 +62,14 @@ function step() {
             segment.x_pos += dx;
             segment.y_pos += dy;
             if (isGameover()) {
-                cleanup();
-                initialize();
+                if (last_chance) {
+                    segment.x_pos -= dx;
+                    segment.y_pos -= dy;
+                    last_chance = false;
+                } else {
+                    cleanup();
+                    initialize();
+                }
                 return;
             }
         } else {
@@ -67,8 +78,9 @@ function step() {
         }
         last_pos = this_pos;
 
-        if (grid[snake[0].x_pos][snake[0].y_pos] === apple) {
-            eat();
+        if (grid[snake[0].x_pos][snake[0].y_pos] &&
+                grid[snake[0].x_pos][snake[0].y_pos].objectName === "apple") {
+            eat = true;
         }
 
         if (i < snake.length-1) {
@@ -77,17 +89,32 @@ function step() {
             grid[segment.x_pos][segment.y_pos] = null;
         }
     }
+    last_chance = true;
+    if (eat) {
+        omnomnom();
+    }
 }
 
 function isGameover() {
-    return (snake[0].x_pos < 0 || snake[0].x_pos >= gameArea.gameSize ||
-            snake[0].y_pos < 0 || snake[0].y_pos >= gameArea.gameSize);
+    if (snake[0].x_pos < 0 || snake[0].x_pos >= gameArea.gameSize ||
+            snake[0].y_pos < 0 || snake[0].y_pos >= gameArea.gameSize) {
+        // Border collision.
+        return true;
+    } else if (grid[snake[0].x_pos][snake[0].y_pos] &&
+               grid[snake[0].x_pos][snake[0].y_pos].objectName === "snake") {
+        // Tail.
+        return true;
+    } else {
+        return false;
+    }
 }
 
-function eat() {
-    placeApple(apple);
-    snake.push(Snake.createObject(gameArea));
+function omnomnom() {
+    snake.push(Snake.createObject( gameArea, {
+                                      x_pos: snake[0].x_pos,
+                                      y_pos: snake[0].y_pos }));
     score.points += 1;
+    placeApple(apple);
 }
 
 function onPressed(event) {
@@ -101,9 +128,11 @@ function onPressed(event) {
     if (snake[0].velocity[0] === 0) {
         if (event.key === Qt.Key_Left) {
             snake[0].velocity = [-1, 0];
+            last_chance = false;
             step();
         } else if (event.key === Qt.Key_Right) {
             snake[0].velocity = [1, 0];
+            last_chance = false;
             step();
         } else {
             return;
@@ -111,9 +140,11 @@ function onPressed(event) {
     } else {
         if (event.key === Qt.Key_Up) {
             snake[0].velocity = [0, -1];
+            last_chance = false;
             step();
         } else if (event.key === Qt.Key_Down) {
             snake[0].velocity = [0, 1];
+            last_chance = false;
             step();
         } else {
             return;

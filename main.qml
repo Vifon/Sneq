@@ -48,7 +48,7 @@ Window {
         text: points * multiplier
 
         property int multiplier: 5
-        property int points: 0
+        property int points: 5
 
         x: 10
         y: 10

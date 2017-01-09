@@ -2,6 +2,7 @@ import QtQuick 2.0
 
 Rectangle {
     id: apple
+    objectName: "apple"
 
     property int size: parent.fieldSize
 
@@ -15,4 +16,11 @@ Rectangle {
     height: size
     radius: width * 0.25
     color: "red"
+
+    Behavior on x {
+        NumberAnimation { duration: parent.stepInterval }
+    }
+    Behavior on y {
+        NumberAnimation { duration: parent.stepInterval }
+    }
 }
