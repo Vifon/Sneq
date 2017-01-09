@@ -110,9 +110,11 @@ function isGameover() {
 }
 
 function omnomnom() {
-    snake.push(Snake.createObject( gameArea, {
-                                      x_pos: snake[0].x_pos,
-                                      y_pos: snake[0].y_pos }));
+    var new_segment = Snake.createObject( gameArea, {
+                                             x_pos: snake[0].x_pos,
+                                             y_pos: snake[0].y_pos });
+    snake.push(new_segment);
+    grid[snake[snake.length-1].x_pos][snake[snake.length-1].y_pos] = new_segment;
     score.points += 1;
     placeApple(apple);
 }
