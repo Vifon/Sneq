@@ -20,13 +20,13 @@ Rectangle {
 
     Behavior on x {
         NumberAnimation {
-            duration: parent.stepInterval
+            duration: mainWindow.stepInterval
             easing.type: Easing.OutQuint
         }
     }
     Behavior on y {
         NumberAnimation {
-            duration: parent.stepInterval
+            duration: mainWindow.stepInterval
             easing.type: Easing.OutQuint
         }
     }

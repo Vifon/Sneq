@@ -18,9 +18,9 @@ Rectangle {
     color: "red"
 
     Behavior on x {
-        NumberAnimation { duration: parent.stepInterval }
+        NumberAnimation { duration: mainWindow.stepInterval }
     }
     Behavior on y {
-        NumberAnimation { duration: parent.stepInterval }
+        NumberAnimation { duration: mainWindow.stepInterval }
     }
 }
