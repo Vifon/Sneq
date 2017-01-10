@@ -15,7 +15,7 @@ function initialize() {
 
     snake = [];
     snake.push(Snake.createObject(gameArea));
-    grid[snake[0].x][snake[0].y] = snake[0];
+    grid[snake[0].x_pos][snake[0].y_pos] = snake[0];
 
     apple = Apple.createObject(gameArea);
     placeApple(apple);
@@ -57,6 +57,8 @@ function step() {
         var dx = segment.velocity[0];
         var dy = segment.velocity[1];
 
+        grid[segment.x_pos][segment.y_pos] = null;
+
         var this_pos = [segment.x_pos, segment.y_pos];
         if (i == 0) {
             segment.x_pos += dx;
@@ -83,11 +85,7 @@ function step() {
             eat = true;
         }
 
-        if (i < snake.length-1) {
-            grid[segment.x_pos][segment.y_pos] = snake[i+1];
-        } else {
-            grid[segment.x_pos][segment.y_pos] = null;
-        }
+        grid[segment.x_pos][segment.y_pos] = segment;
     }
     last_chance = true;
     if (eat) {
