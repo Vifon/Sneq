@@ -6,7 +6,9 @@ Window {
     id: mainWindow
     visible: true
 
-    property int stepInterval: 100
+    property int baseStep: 1000
+    property int stepInterval: baseStep / (stepMultiplier + 1)
+    property int stepMultiplier: 9
 
     Rectangle {
         id: gameArea
@@ -45,10 +47,10 @@ Window {
     Text {
         id: score
 
-        text: points * multiplier
+        text: points
 
-        property int multiplier: 5
-        property int points: 5
+        property int multiplier: mainWindow.stepMultiplier
+        property int points: 0
 
         x: 10
         y: 10

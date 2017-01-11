@@ -113,7 +113,7 @@ function omnomnom() {
                                              y_pos: snake[0].y_pos });
     snake.push(new_segment);
     grid[snake[snake.length-1].x_pos][snake[snake.length-1].y_pos] = new_segment;
-    score.points += 1;
+    score.points += score.multiplier;
     placeApple(apple);
 }
 
@@ -123,6 +123,9 @@ function onPressed(event) {
         initialize();
     } else if (event.key === Qt.Key_Q) {
         Qt.quit();
+    } else if (event.key >= Qt.Key_1 &&
+               event.key <= Qt.Key_9) {
+        mainWindow.stepMultiplier = event.key - Qt.Key_0; // possible values: 1..9
     }
 
     if (snake[0].velocity[0] === 0) {
