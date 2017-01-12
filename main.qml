@@ -20,6 +20,7 @@ Window {
 
         border.color: "red"
         border.width: 2
+        color: "#eeeeee"
         anchors.centerIn: parent
 
         property int fieldSize: width / gameSize
